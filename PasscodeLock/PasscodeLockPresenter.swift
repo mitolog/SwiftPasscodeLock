@@ -66,7 +66,7 @@ open class PasscodeLockPresenter {
         isPasscodePresented = true
         
         passcodeLockWindow.windowLevel = 2
-        passcodeLockWindow.hidden = false
+        passcodeLockWindow.isHidden = false
         
         toggleKeyboardVisibility(hide: true)
         
@@ -117,12 +117,12 @@ open class PasscodeLockPresenter {
     
     internal func animatePasscodeLockDismissal() {
         
-        UIView.animateWithDuration(
-            0.5,
+        UIView.animate(
+            withDuration: 0.5,
             delay: 0,
             usingSpringWithDamping: 1,
             initialSpringVelocity: 0,
-            options: [.CurveEaseInOut],
+            options: [.curveEaseInOut],
             animations: { [weak self] in
                 
                 self?.passcodeLockWindow.alpha = 0
