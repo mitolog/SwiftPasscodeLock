@@ -17,7 +17,16 @@ struct EnterPasscodeState: PasscodeLockStateType {
     let isCancellableAction: Bool
     var isTouchIDAllowed = true
     
-    private var inccorectPasscodeAttempts = 0
+    static let incorrectPasscodeAttemptsKey = "incorrectPasscodeAttempts"
+    static var incorrectPasscodeAttempts: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: incorrectPasscodeAttemptsKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: incorrectPasscodeAttemptsKey)
+        }
+    }
+    
     private var isNotificationSent = false
     
     init(allowCancellation: Bool = false) {
@@ -27,36 +36,40 @@ struct EnterPasscodeState: PasscodeLockStateType {
         description = localizedStringFor("PasscodeLockEnterDescription", comment: "Enter passcode description")
     }
     
-    mutating func acceptPasscode(passcode: [String], fromLock lock: PasscodeLockType) {
+    mutating func acceptPasscode(_ passcode: [String], fromLock lock: PasscodeLockType) {
         
         guard let currentPasscode = lock.repository.passcode else {
             return
         }
         
+        var incorrectPasscodeAttempts = EnterPasscodeState.incorrectPasscodeAttempts
         if passcode == currentPasscode {
             
             lock.delegate?.passcodeLockDidSucceed(lock)
-            
+            incorrectPasscodeAttempts = 0
         } else {
             
-            inccorectPasscodeAttempts += 1
+            incorrectPasscodeAttempts += 1
             
-            if inccorectPasscodeAttempts >= lock.configuration.maximumInccorectPasscodeAttempts {
+            if incorrectPasscodeAttempts >= lock.configuration.maximumInccorectPasscodeAttempts {
                 
                 postNotification()
+                incorrectPasscodeAttempts = 0
             }
             
             lock.delegate?.passcodeLockDidFail(lock)
         }
+        
+        EnterPasscodeState.incorrectPasscodeAttempts = incorrectPasscodeAttempts
     }
     
-    private mutating func postNotification() {
+    fileprivate mutating func postNotification() {
         
         guard !isNotificationSent else { return }
             
-        let center = NSNotificationCenter.defaultCenter()
+        let center = NotificationCenter.default
         
-        center.postNotificationName(PasscodeLockIncorrectPasscodeNotification, object: nil)
+        center.post(name: Notification.Name(rawValue: PasscodeLockIncorrectPasscodeNotification), object: nil)
         
         isNotificationSent = true
     }
