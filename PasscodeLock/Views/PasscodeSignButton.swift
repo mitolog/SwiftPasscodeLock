@@ -20,7 +20,14 @@ open class PasscodeSignButton: UIButton {
             setupView()
         }
     }
-    
+
+    @IBInspectable
+    open var borderWidth: CGFloat = 0 {
+        didSet {
+            setupView()
+        }
+    }
+
     @IBInspectable
     open var borderRadius: CGFloat = 30 {
         didSet {
@@ -59,7 +66,7 @@ open class PasscodeSignButton: UIButton {
     
     fileprivate func setupView() {
         
-        layer.borderWidth = 1
+        layer.borderWidth = borderWidth
         layer.cornerRadius = borderRadius
         layer.borderColor = borderColor.cgColor
         

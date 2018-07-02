@@ -34,7 +34,18 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     @IBOutlet open weak var deleteSignButton: UIButton?
     @IBOutlet open weak var touchIDButton: UIButton?
     @IBOutlet open weak var placeholdersX: NSLayoutConstraint?
-    
+
+    @IBOutlet weak var oneBtn: PasscodeSignButton!
+    @IBOutlet weak var twoBtn: PasscodeSignButton!
+    @IBOutlet weak var threeBtn: PasscodeSignButton!
+    @IBOutlet weak var fourBtn: PasscodeSignButton!
+    @IBOutlet weak var fiveBtn: PasscodeSignButton!
+    @IBOutlet weak var sixBtn: PasscodeSignButton!
+    @IBOutlet weak var sevenBtn: PasscodeSignButton!
+    @IBOutlet weak var eightBtn: PasscodeSignButton!
+    @IBOutlet weak var nineBtn: PasscodeSignButton!
+    @IBOutlet weak var zeroBtn: PasscodeSignButton!
+
     open var successCallback: ((_ lock: PasscodeLockType) -> Void)?
     open var dismissCompletionCallback: (()->Void)?
     open var animateOnDismiss: Bool
@@ -83,7 +94,8 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         super.viewDidLoad()
         
         deleteSignButton?.isEnabled = false
-        
+
+        configureUI()
         setupEvents()
     }
     
@@ -101,7 +113,66 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
             authenticateWithBiometrics()
         }
     }
-    
+
+    internal func configureUI() {
+
+        if let deleteBtnImg = passcodeConfiguration.deleteButtonImage {
+            deleteSignButton?.setImage(deleteBtnImg, for: .normal)
+            deleteSignButton?.contentMode = .center
+            deleteSignButton?.imageView?.contentMode = .scaleAspectFit
+        }
+        if let cancelBtnImg = passcodeConfiguration.cancelButtonImage {
+            cancelButton?.setImage(cancelBtnImg, for: .normal)
+            cancelButton?.contentMode = .center
+            cancelButton?.imageView?.contentMode = .scaleAspectFit
+        }
+        if let numPadColor = passcodeConfiguration.numberPadTintColor {
+
+            oneBtn.borderColor = numPadColor
+            twoBtn.borderColor = numPadColor
+            threeBtn.borderColor = numPadColor
+            fourBtn.borderColor = numPadColor
+            fiveBtn.borderColor = numPadColor
+            sixBtn.borderColor = numPadColor
+            sevenBtn.borderColor = numPadColor
+            eightBtn.borderColor = numPadColor
+            nineBtn.borderColor = numPadColor
+            zeroBtn.borderColor = numPadColor
+
+            oneBtn.setTitleColor(numPadColor, for: .normal)
+            twoBtn.setTitleColor(numPadColor, for: .normal)
+            threeBtn.setTitleColor(numPadColor, for: .normal)
+            fourBtn.setTitleColor(numPadColor, for: .normal)
+            fiveBtn.setTitleColor(numPadColor, for: .normal)
+            sixBtn.setTitleColor(numPadColor, for: .normal)
+            sevenBtn.setTitleColor(numPadColor, for: .normal)
+            eightBtn.setTitleColor(numPadColor, for: .normal)
+            nineBtn.setTitleColor(numPadColor, for: .normal)
+            zeroBtn.setTitleColor(numPadColor, for: .normal)
+        }
+        if let fillColor = passcodeConfiguration.placeHolderFillColor {
+            for placeHolder in placeholders {
+                placeHolder.activeColor = fillColor
+            }
+        }
+        if let borderColor = passcodeConfiguration.placeHolderBorderColor {
+            for placeHolder in placeholders {
+                placeHolder.inactiveColor = borderColor
+            }
+        }
+        if let errorColor = passcodeConfiguration.placeHolderErrorColor {
+            for placeHolder in placeholders {
+                placeHolder.errorColor = errorColor
+            }
+        }
+        if let titleFont = passcodeConfiguration.titleFont {
+            self.titleLabel?.font = titleFont
+        }
+        if let descFont = passcodeConfiguration.subTitleFont {
+            self.descriptionLabel?.font = descFont
+        }
+    }
+
     internal func updatePasscodeView() {
         
         titleLabel?.text = passcodeLock.state.title

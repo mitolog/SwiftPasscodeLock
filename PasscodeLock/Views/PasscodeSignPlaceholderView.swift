@@ -57,17 +57,17 @@ open class PasscodeSignPlaceholderView: UIView {
     
     fileprivate func setupView() {
         
-        layer.cornerRadius = 8
+        layer.cornerRadius = self.frame.width * 0.5
         layer.borderWidth = 1
-        layer.borderColor = activeColor.cgColor
-        backgroundColor = inactiveColor
+        layer.borderColor = inactiveColor.cgColor
+        backgroundColor = activeColor
     }
     
     fileprivate func colorsForState(_ state: State) -> (backgroundColor: UIColor, borderColor: UIColor) {
         
         switch state {
-        case .inactive: return (inactiveColor, activeColor)
-        case .active: return (activeColor, activeColor)
+        case .inactive: return (activeColor, inactiveColor)
+        case .active: return (inactiveColor, activeColor)
         case .error: return (errorColor, errorColor)
         }
     }

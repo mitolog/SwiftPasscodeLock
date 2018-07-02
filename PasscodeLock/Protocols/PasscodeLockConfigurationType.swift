@@ -16,6 +16,15 @@ public protocol PasscodeLockConfigurationType {
     var shouldRequestTouchIDImmediately: Bool {get}
     var touchIdReason: String? {get set}
     var maximumInccorectPasscodeAttempts: Int {get}
+
+    var deleteButtonImage: UIImage? {get set}
+    var cancelButtonImage: UIImage? {get set}
+    var numberPadTintColor: UIColor? {get set}
+    var placeHolderFillColor: UIColor? {get set}
+    var placeHolderBorderColor: UIColor? {get set}
+    var placeHolderErrorColor: UIColor? {get set}
+    var titleFont: UIFont? {get set}
+    var subTitleFont: UIFont? {get set}
 }
 
 // set configuration optionals
@@ -26,5 +35,27 @@ public extension PasscodeLockConfigurationType {
     
     var maximumInccorectPasscodeAttempts: Int {
         return -1
+    }
+
+    var numberPadTintColor: UIColor? {
+        return UIColor.white
+    }
+
+    var placeHolderFillColor: UIColor? {
+        return UIColor.white
+    }
+    
+    var placeHolderBorderColor: UIColor? {
+        return UIColor.gray
+    }
+
+    var placeHolderErrorColor: UIColor? {
+        return UIColor.gray
+    }
+    var titleFont: UIFont? {
+        return UIFont.systemFont(ofSize: 19)
+    }
+    var subTitleFont: UIFont? {
+        return UIFont.systemFont(ofSize: 15)
     }
 }
